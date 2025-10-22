@@ -1,0 +1,120 @@
+﻿.notifications-container {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+}
+
+.notification {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-left: 4px solid #3182ce;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.notification.info {
+  border-left-color: #3182ce;
+  background: linear-gradient(135deg, #fff, #ebf8ff);
+}
+
+.notification.warning {
+  border-left-color: #d69e2e;
+  background: linear-gradient(135deg, #fff, #fefcbf);
+}
+
+.notification.success {
+  border-left-color: #38a169;
+  background: linear-gradient(135deg, #fff, #f0fff4);
+}
+
+.notification.error {
+  border-left-color: #e53e3e;
+  background: linear-gradient(135deg, #fff, #fed7d7);
+}
+
+.notification-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-message {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-top: 4px;
+  display: block;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.notification-close:hover {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .notifications-container {
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .notification {
+    padding: 12px;
+  }
+}
