@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
@@ -22,22 +22,22 @@ app.use(cors({
 app.use(express.json());
 
 // Enhanced MongoDB connection with detailed logging
-console.log('🔧 Starting SafeCity Backend...');
-console.log('📊 Environment:', process.env.NODE_ENV);
-console.log('🗄️ MongoDB URI present:', !!process.env.MONGODB_URI);
+console.log('?? Starting SafeCity Backend...');
+console.log('?? Environment:', process.env.NODE_ENV);
+console.log('??? MongoDB URI present:', !!process.env.MONGODB_URI);
 
 const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI;
     
     if (!mongoURI) {
-      console.log('❌ MONGODB_URI environment variable is not set');
-      console.log('💡 Please set MONGODB_URI in Render environment variables');
+      console.log('? MONGODB_URI environment variable is not set');
+      console.log('?? Please set MONGODB_URI in Render environment variables');
       return;
     }
     
-    console.log('🔗 Attempting MongoDB connection...');
-    console.log('📡 Connection string:', mongoURI.replace(/:[^:]*@/, ':****@')); // Hide password
+    console.log('?? Attempting MongoDB connection...');
+    console.log('?? Connection string:', mongoURI.replace(/:[^:]*@/, ':****@')); // Hide password
     
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
@@ -46,22 +46,22 @@ const connectDB = async () => {
       socketTimeoutMS: 45000,
     });
     
-    console.log('✅ SUCCESS: Connected to MongoDB!');
-    console.log('📁 Database:', mongoose.connection.db.databaseName);
-    console.log('🎯 MongoDB ready for operations');
+    console.log('? SUCCESS: Connected to MongoDB!');
+    console.log('?? Database:', mongoose.connection.db.databaseName);
+    console.log('?? MongoDB ready for operations');
     
   } catch (error) {
-    console.error('❌ FAILED: MongoDB connection error:');
+    console.error('? FAILED: MongoDB connection error:');
     console.error('Error name:', error.name);
     console.error('Error message:', error.message);
     console.error('Error code:', error.code);
     
     if (error.name === 'MongoNetworkError') {
-      console.log('💡 Network issue - check IP whitelisting in MongoDB Atlas');
+      console.log('?? Network issue - check IP whitelisting in MongoDB Atlas');
     } else if (error.name === 'MongoServerError') {
-      console.log('💡 Authentication issue - check username/password');
+      console.log('?? Authentication issue - check username/password');
     } else if (error.name === 'MongoParseError') {
-      console.log('💡 Connection string format issue');
+      console.log('?? Connection string format issue');
     }
   }
 };
@@ -71,7 +71,7 @@ connectDB();
 
 // Socket.io connection handling
 io.on('connection', (socket) => {
-  console.log('🔌 New client connected:', socket.id);
+  console.log('?? New client connected:', socket.id);
 
   socket.on('join_room', (userId) => {
     socket.join(userId);
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('🔌 Client disconnected:', socket.id);
+    console.log('?? Client disconnected:', socket.id);
   });
 });
 
@@ -93,8 +93,8 @@ app.use('/api/incidents', require('./routes/incidents'));
 // Basic route
 app.get('/', (req, res) => {
   res.json({ 
-    message: '🚀 SafeCity API is running!',
-    database: mongoose.connection.readyState === 1 ? 'Connected ✅' : 'Disconnected ❌'
+    message: '?? SafeCity API is running!',
+    database: mongoose.connection.readyState === 1 ? 'Connected ?' : 'Disconnected ?'
   });
 });
 
@@ -109,8 +109,8 @@ app.get('/health', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log('🎯 Server running on port ' + PORT);
-  console.log('🔌 Socket.io server initialized');
+  console.log('?? Server running on port ' + PORT);
+  console.log('?? Socket.io server initialized');
 });
 // Add these auth routes after your MongoDB connection
 app.post('/api/auth/register', (req, res) => {
@@ -124,3 +124,4 @@ app.post('/api/auth/login', (req, res) => {
 app.get('/api/auth/test', (req, res) => {
     res.json({ message: 'Auth test endpoint - working', status: 'success' });
 });
+
