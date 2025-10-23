@@ -9,46 +9,79 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://safecity-app-frontend.onrender.com"],
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://safecity-app-frontend.onrender.com',
-    'https://safecity-app-frontend.onrender.com'
-  ],
+  origin: ["http://localhost:5173", "https://safecity-app-frontend.onrender.com"],
   credentials: true
 }));
+app.use(express.json());
 
-// Database connection
-// Add this near the top of server.js (after imports)
+// Enhanced MongoDB connection with detailed logging
 console.log('🔧 Starting SafeCity Backend...');
 console.log('📊 Environment:', process.env.NODE_ENV);
-console.log('🗄️ MongoDB URI:', process.env.MONGODB_URI ? 'Set' : 'Not Set');
+console.log('🗄️ MongoDB URI present:', !!process.env.MONGODB_URI);
 
-// Update the MongoDB connection with better error handling
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/safecity', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000, // Timeout after 5s
-  socketTimeoutMS: 45000, // Close sockets after 45s
-})
-.then(() => {
-  console.log('✅ Connected to MongoDB successfully');
-  console.log('📁 Database:', mongoose.connection.db.databaseName);
-})
-.catch(err => {
-  console.error('❌ MongoDB connection error:', err.message);
-  console.log('⚠️  Application starting without database connection');
-  console.log('💡 Please set MONGODB_URI environment variable');
-});
+const connectDB = async () => {
+  try {
+    const mongoURI = process.env.MONGODB_URI;
+    
+    if (!mongoURI) {
+      console.log('❌ MONGODB_URI environment variable is not set');
+      console.log('💡 Please set MONGODB_URI in Render environment variables');
+      return;
+    }
+    
+    console.log('🔗 Attempting MongoDB connection...');
+    console.log('📡 Connection string:', mongoURI.replace(/:[^:]*@/, ':****@')); // Hide password
+    
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+    });
+    
+    console.log('✅ SUCCESS: Connected to MongoDB!');
+    console.log('📁 Database:', mongoose.connection.db.databaseName);
+    console.log('🎯 MongoDB ready for operations');
+    
+  } catch (error) {
+    console.error('❌ FAILED: MongoDB connection error:');
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.error('Error code:', error.code);
+    
+    if (error.name === 'MongoNetworkError') {
+      console.log('💡 Network issue - check IP whitelisting in MongoDB Atlas');
+    } else if (error.name === 'MongoServerError') {
+      console.log('💡 Authentication issue - check username/password');
+    } else if (error.name === 'MongoParseError') {
+      console.log('💡 Connection string format issue');
+    }
+  }
+};
+
+// Connect to database
+connectDB();
+
+// Socket.io connection handling
+io.on('connection', (socket) => {
+  console.log('🔌 New client connected:', socket.id);
+
+  socket.on('join_room', (userId) => {
+    socket.join(userId);
+    console.log('User ' + userId + ' joined room');
+  });
+
   socket.on('disconnect', () => {
     console.log('🔌 Client disconnected:', socket.id);
   });
+});
 
 // Make io available to routes
 app.set('io', io);
@@ -59,7 +92,19 @@ app.use('/api/incidents', require('./routes/incidents'));
 
 // Basic route
 app.get('/', (req, res) => {
-  res.json({ message: '🚀 SafeCity API is running!' });
+  res.json({ 
+    message: '🚀 SafeCity API is running!',
+    database: mongoose.connection.readyState === 1 ? 'Connected ✅' : 'Disconnected ❌'
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    timestamp: new Date().toISOString()
+  });
 });
 
 const PORT = process.env.PORT || 5000;
