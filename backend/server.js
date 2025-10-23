@@ -25,23 +25,30 @@ app.use(cors({
 }));
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/safecity')
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// Add this near the top of server.js (after imports)
+console.log('🔧 Starting SafeCity Backend...');
+console.log('📊 Environment:', process.env.NODE_ENV);
+console.log('🗄️ MongoDB URI:', process.env.MONGODB_URI ? 'Set' : 'Not Set');
 
-// Socket.io connection handling
-io.on('connection', (socket) => {
-  console.log('🔌 New client connected:', socket.id);
-
-  socket.on('join_room', (userId) => {
-    socket.join(userId);
-    console.log('User ' + userId + ' joined room');
-  });
-
+// Update the MongoDB connection with better error handling
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/safecity', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000, // Timeout after 5s
+  socketTimeoutMS: 45000, // Close sockets after 45s
+})
+.then(() => {
+  console.log('✅ Connected to MongoDB successfully');
+  console.log('📁 Database:', mongoose.connection.db.databaseName);
+})
+.catch(err => {
+  console.error('❌ MongoDB connection error:', err.message);
+  console.log('⚠️  Application starting without database connection');
+  console.log('💡 Please set MONGODB_URI environment variable');
+});
   socket.on('disconnect', () => {
     console.log('🔌 Client disconnected:', socket.id);
   });
-});
 
 // Make io available to routes
 app.set('io', io);
