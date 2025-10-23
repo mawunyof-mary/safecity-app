@@ -15,8 +15,14 @@ const io = socketIo(server, {
 });
 
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://safecity-app-frontend.onrender.com',
+    'https://safecity-app-frontend.onrender.com'
+  ],
+  credentials: true
+}));
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/safecity')
