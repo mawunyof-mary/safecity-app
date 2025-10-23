@@ -112,3 +112,15 @@ server.listen(PORT, () => {
   console.log('🎯 Server running on port ' + PORT);
   console.log('🔌 Socket.io server initialized');
 });
+// Add these auth routes after your MongoDB connection
+app.post('/api/auth/register', (req, res) => {
+    res.json({ message: 'Register endpoint - working', status: 'success' });
+});
+
+app.post('/api/auth/login', (req, res) => {
+    res.json({ message: 'Login endpoint - working', status: 'success' });
+});
+
+app.get('/api/auth/test', (req, res) => {
+    res.json({ message: 'Auth test endpoint - working', status: 'success' });
+});
