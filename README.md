@@ -1,6 +1,3 @@
-cd C:\Users\user\Desktop\safecity-app
-
-@"
 # 🛡️ SafeCity - Community Safety Platform
 
 A full-stack MERN application that allows community members to report local incidents and visualize them on interactive heatmaps to improve neighborhood safety.
@@ -59,7 +56,7 @@ A full-stack MERN application that allows community members to report local inci
 ## 🚀 Quick Start
 
 ### Local Development
-\`\`\`bash
+bash
 # Backend
 cd backend
 npm install
@@ -69,7 +66,6 @@ npm run dev
 cd frontend  
 npm install
 npm run dev
-\`\`\`
 
 ### Production URLs
 - **Frontend:** https://safecity-app-frontend.onrender.com
@@ -77,7 +73,6 @@ npm run dev
 
 ## 📁 Project Structure
 
-\`\`\`
 safecity-app/
 ├── backend/
 │   ├── models/          # MongoDB models (User, Incident)
@@ -91,7 +86,6 @@ safecity-app/
 │   │   └── App.jsx      # Main app
 │   └── package.json
 └── README.md
-\`\`\`
 
 ## 🌐 API Endpoints
 
@@ -108,16 +102,16 @@ safecity-app/
 ## 🔧 Environment Variables
 
 ### Backend (.env)
-\`\`\`env
+\`env
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 NODE_ENV=production
-\`\`\`
+\`
 
 ### Frontend (.env)
-\`\`\`env
+\`env
 VITE_API_URL=https://safecity-app-backend.onrender.com/api
-\`\`\`
+\`
 
 ## 🤝 Contributing
 
@@ -134,8 +128,7 @@ This project is licensed under the MIT License.
 ## 👤 Author
 
 - **Mary Mawunyof** 
-- GitHub: [@mawunyof-mary](https://github.com/mawunyof-mary)
-- Portfolio: [Add your portfolio link]
+- GitHub: [@mawunyof-mary](https://github.com/mawunyof-mary) (https://github.com/mawunyof-mary/safecity-app/)
 
 ## 🙏 Acknowledgments
 
@@ -144,4 +137,3 @@ This project is licensed under the MIT License.
 - OpenStreetMap for map data
 - Leaflet.js for mapping library
 - Render for hosting platform
-\`\`\`"@ | Out-File -FilePath README.md -Encoding utf8 -Force
