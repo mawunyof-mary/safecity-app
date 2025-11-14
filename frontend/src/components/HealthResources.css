@@ -1,0 +1,112 @@
+.health-resources-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.health-resources-container h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filters-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.type-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: #27ae60;
+  color: white;
+  border-color: #27ae60;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.resource-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.resource-header {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resource-header h3 {
+  margin: 0;
+}
+
+.resource-type {
+  background: #27ae60;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.resource-details {
+  margin-bottom: 15px;
+}
+
+.resource-details p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.open-24 {
+  background: #e8f8f5;
+  color: #27ae60;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.resource-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.call-btn, .directions-btn {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.call-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.directions-btn {
+  background: #3498db;
+  color: white;
+}
